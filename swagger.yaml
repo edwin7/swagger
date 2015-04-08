@@ -1,0 +1,220 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Blibli API
+  description: Blibli API for Mobile Apps
+  version: "1.0.0"
+# the domain of the service
+host: locahost:8080
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /blibi-api
+produces:
+  - application/json
+paths:
+  /version:
+    get:
+      summary: Get server version
+      description: Server version needed to compare with mobile app version
+      tags:
+        - version
+      consumes:
+        - application/json
+      produces:
+        - application/json        
+      responses:
+        "404":
+          description: Version not found
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Version"
+  /orders:
+    get:
+      summary: Get all orders of a customer
+      description: List of all oders of customer (active, inactive, canceled)
+      tags:
+        - order
+      consumes:
+        - application/json
+      produces:
+        - application/json        
+      responses:
+        "404":
+          description: Version not found
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Orders"            
+  /login:
+    get:
+      summary: Login to blibli
+      description: login to blibli.com using username and password
+      tags:
+        - login
+      consumes:
+        - application/json
+      produces:
+        - application/json  
+      parameters:
+        - in: query
+          name: email
+          description: The email for login
+          required: true
+          type: string
+        - in: query
+          name: password
+          description: The password for login in clear text
+          required: true
+          type: string        
+      responses:
+        "404":
+          description: Can't login
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Login"   
+  /login_facebook:
+    get:
+      summary: Login to blibli
+      description: login to blibli.com using Facebook account
+      tags:
+        - login_facebook
+      consumes:
+        - application/json
+      produces:
+        - application/json          
+      responses:
+        "404":
+          description: Can't login
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/LoginFacebook"             
+  /register:
+    get:
+      summary: Register to blibli
+      description: Register with username and password
+      tags:
+        - register
+      consumes:
+        - application/json
+      produces:
+        - application/json  
+      parameters:
+        - in: query
+          name: email
+          description: The email for login
+          required: true
+          type: string
+        - in: query
+          name: password
+          description: The password for login in clear text
+          required: true
+          type: string        
+      responses:
+        "404":
+          description: Can't register
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Register"   
+  /forget_password:
+    get:
+      summary: Forget password
+      description: send password to email
+      tags:
+        - forget password
+      consumes:
+        - application/json
+      produces:
+        - application/json        
+      responses:
+        "404":
+          description: Email not found
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/ForgetPassword"             
+  /user:
+    get:
+      summary: User Profile
+      description: Get user details
+      tags:
+        - user
+      consumes:
+        - application/json
+      produces:
+        - application/json        
+      responses:
+        "404":
+          description: User not found
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/User"    
+            
+            
+            
+##################################################            
+################ DEFINITION MODELS################
+################ ################################# 
+
+
+definitions:
+  Version:
+    properties:
+      id:
+        type: integer
+        format: int64
+  Orders:
+    properties:
+      order:
+        $ref: "#/definitions/Order" 
+  Order:
+    properties:
+      id:
+        type: integer
+        format: int64
+      status:
+        type: string
+      created_at:
+        type: string        
+  Login:
+    properties:
+      access_token:
+        type: string
+      result:
+        type: string       
+  LoginFacebook:
+    properties:
+      id:
+        type: integer
+        format: int64  
+  Register:
+    properties:
+      access_token:
+        type: string
+      result:
+        type: string            
+  ForgetPassword:
+    properties:
+      email:
+        type: string
+  User:
+    properties:
+      handphone:
+        type: string        
+      birthday:
+        type: string        
+      gender:
+        type: string        
+      member_r_type:
+        type: string        
+      name:
+        type: string        
+      email:
+        type: string  
