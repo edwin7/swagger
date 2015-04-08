@@ -1,223 +1,326 @@
 {
     "swagger": "2.0",
     "info": {
-        "version": "1.0.0",
-        "title": "Swagger Petstore (Simple)",
-        "description": "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
-        "termsOfService": "http://helloreverb.com/terms/",
-        "contact": {
-            "name": "Swagger API team",
-            "email": "foo@example.com",
-            "url": "http://swagger.io"
-        },
-        "license": {
-            "name": "MIT",
-            "url": "http://opensource.org/licenses/MIT"
-        }
+        "title": "Blibli API",
+        "description": "Blibli API for Mobile Apps",
+        "version": "1.0.0"
     },
-    "host": "petstore.swagger.wordnik.com",
-    "basePath": "/api",
+    "host": "locahost:8080",
     "schemes": [
         "http"
     ],
-    "consumes": [
-        "application/json"
-    ],
+    "basePath": "/blibi-api",
     "produces": [
         "application/json"
     ],
     "paths": {
-        "/pets": {
+        "/version": {
             "get": {
-                "description": "Returns all pets from the system that the user has access to",
-                "operationId": "findPets",
-                "produces": [
-                    "application/json",
-                    "application/xml",
-                    "text/xml",
-                    "text/html"
+                "summary": "Get server version",
+                "description": "Server version needed to compare with mobile app version",
+                "tags": [
+                    "version"
                 ],
-                "parameters": [
-                    {
-                        "name": "tags",
-                        "in": "query",
-                        "description": "tags to filter by",
-                        "required": false,
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "description": "maximum number of results to return",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int32"
-                    }
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
                 ],
                 "responses": {
                     "200": {
-                        "description": "pet response",
+                        "description": "successful operation",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/pet"
-                            }
+                            "$ref": "#/definitions/Version"
                         }
                     },
-                    "default": {
-                        "description": "unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/errorModel"
-                        }
+                    "404": {
+                        "description": "Version not found"
                     }
                 }
-            },
-            "post": {
-                "description": "Creates a new pet in the store.  Duplicates are allowed",
-                "operationId": "addPet",
+            }
+        },
+        "/orders": {
+            "get": {
+                "summary": "Get all orders of a customer",
+                "description": "List of all oders of customer (active, inactive, canceled)",
+                "tags": [
+                    "order"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Orders"
+                        }
+                    },
+                    "404": {
+                        "description": "Version not found"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "get": {
+                "summary": "Login to blibli",
+                "description": "login to blibli.com using username and password",
+                "tags": [
+                    "login"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "pet",
-                        "in": "body",
-                        "description": "Pet to add to the store",
+                        "in": "query",
+                        "name": "email",
+                        "description": "The email for login",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/newPet"
-                        }
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login in clear text",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "pet response",
+                        "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/pet"
+                            "$ref": "#/definitions/Login"
                         }
                     },
-                    "default": {
-                        "description": "unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/errorModel"
-                        }
+                    "404": {
+                        "description": "Can't login"
                     }
                 }
             }
         },
-        "/pets/{id}": {
+        "/login_facebook": {
             "get": {
-                "description": "Returns a user based on a single ID, if the user does not have access to the pet",
-                "operationId": "findPetById",
+                "summary": "Login to blibli",
+                "description": "login to blibli.com using Facebook account",
+                "tags": [
+                    "login_facebook"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
-                    "application/json",
-                    "application/xml",
-                    "text/xml",
-                    "text/html"
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/LoginFacebook"
+                        }
+                    },
+                    "404": {
+                        "description": "Can't login"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "get": {
+                "summary": "Register to blibli",
+                "description": "Register with username and password",
+                "tags": [
+                    "register"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of pet to fetch",
+                        "in": "query",
+                        "name": "email",
+                        "description": "The email for login",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login in clear text",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "pet response",
+                        "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/pet"
+                            "$ref": "#/definitions/Register"
                         }
                     },
-                    "default": {
-                        "description": "unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/errorModel"
-                        }
+                    "404": {
+                        "description": "Can't register"
                     }
                 }
-            },
-            "delete": {
-                "description": "deletes a single pet based on the ID supplied",
-                "operationId": "deletePet",
+            }
+        },
+        "/forget_password": {
+            "get": {
+                "summary": "Forget password",
+                "description": "send password to email",
+                "tags": [
+                    "forget password"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of pet to delete",
+                        "in": "query",
+                        "name": "email",
+                        "description": "email for forget password",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "type": "string"
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "pet deleted"
-                    },
-                    "default": {
-                        "description": "unexpected error",
+                    "200": {
+                        "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/errorModel"
+                            "$ref": "#/definitions/ForgetPassword"
                         }
+                    },
+                    "404": {
+                        "description": "Email not found"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "summary": "User Profile",
+                "description": "Get user details",
+                "tags": [
+                    "user"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
                     }
                 }
             }
         }
     },
     "definitions": {
-        "pet": {
-            "required": [
-                "id",
-                "name"
-            ],
+        "Version": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "Orders": {
+            "properties": {
+                "order": {
+                    "$ref": "#/definitions/Order"
+                }
+            }
+        },
+        "Order": {
             "properties": {
                 "id": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "name": {
+                "status": {
                     "type": "string"
                 },
-                "tag": {
+                "created_at": {
                     "type": "string"
                 }
             }
         },
-        "newPet": {
-            "required": [
-                "name"
-            ],
+        "Login": {
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "string"
+                }
+            }
+        },
+        "LoginFacebook": {
             "properties": {
                 "id": {
                     "type": "integer",
                     "format": "int64"
-                },
-                "name": {
+                }
+            }
+        },
+        "Register": {
+            "properties": {
+                "access_token": {
                     "type": "string"
                 },
-                "tag": {
+                "result": {
                     "type": "string"
                 }
             }
         },
-        "errorModel": {
-            "required": [
-                "code",
-                "message"
-            ],
+        "ForgetPassword": {
             "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32"
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "properties": {
+                "handphone": {
+                    "type": "string"
                 },
-                "message": {
+                "birthday": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "member_r_type": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
                     "type": "string"
                 }
             }
